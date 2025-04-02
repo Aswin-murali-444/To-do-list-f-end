@@ -74,6 +74,7 @@ function ToDo() {
       console.error('Failed to add task:', error);
     }
   };
+  
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -86,9 +87,14 @@ function ToDo() {
 
   const handleEditTask = (task) => {
     setEditingTaskId(task._id);
-    setEditedTask(task);
+    setEditedTask({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '', // Fix blank date issue
+      priority: task.priority,
+    });
   };
-
+  
   const saveEditedTask = async () => {
     try {
       const response = await fetch(`https://to-do-list-b-end-gf50.onrender.com/api/todos/${editingTaskId}`, {
@@ -116,14 +122,21 @@ function ToDo() {
     const now = new Date();
     const due = new Date(dueDate);
     const timeDiff = due - now;
-    const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-    if (daysRemaining < 0) {
+    if (timeDiff < 0) {
       return 'Overdue';
-    } else if (daysRemaining === 0) {
-      return 'Due today';
+    }
+
+    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ${hours} hour${hours !== 1 ? 's' : ''} remaining`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''} remaining`;
     } else {
-      return `${daysRemaining} day${daysRemaining > 1 ? 's' : ''} remaining`;
+      return `${minutes} minute${minutes !== 1 ? 's' : ''} remaining`;
     }
   };
 
