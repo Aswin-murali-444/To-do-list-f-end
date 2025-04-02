@@ -36,7 +36,7 @@ function ToDo() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('https://to-do-list-b-end-gf50.onrender.com');
+      const response = await fetch('https://to-do-list-b-end-gf50.onrender.com/api/todos');
       if (response.ok) {
         const data = await response.json();
         setTasks(data);
@@ -55,7 +55,7 @@ function ToDo() {
     }
 
     try {
-      const response = await fetch('https://to-do-list-b-end-gf50.onrender.com', {
+      const response = await fetch('https://to-do-list-b-end-gf50.onrender.com/api/todos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ function ToDo() {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await fetch(`https://to-do-list-b-end-gf50.onrender.com/${taskId}`, { method: 'DELETE' });
+      await fetch(`https://to-do-list-b-end-gf50.onrender.com/api/todos/${taskId}`, { method: 'DELETE' });
       setTasks(tasks.filter((task) => task._id !== taskId));
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -91,7 +91,7 @@ function ToDo() {
 
   const saveEditedTask = async () => {
     try {
-      const response = await fetch(`https://to-do-list-b-end-gf50.onrender.com/${editingTaskId}`, {
+      const response = await fetch(`https://to-do-list-b-end-gf50.onrender.com/api/todos/${editingTaskId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
