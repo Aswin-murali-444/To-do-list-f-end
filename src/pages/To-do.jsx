@@ -55,7 +55,7 @@ function ToDo() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/todos', {
+      const response = await fetch('https://to-do-list-b-end-gf50.onrender.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
